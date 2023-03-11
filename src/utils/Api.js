@@ -14,74 +14,76 @@ class Api {
   }
 
   _request(endpoint, options) {
-    return fetch(`${this._baseUrl}${endpoint}`, options).then(this._checkResponse)
+    return fetch(`${this._baseUrl}${endpoint}`, options).then(
+      this._checkResponse
+    );
   }
 
   getUserInfo() {
-    return this._request('/users/me', {
-      headers: this._headers
-    })
+    return this._request("/users/me", {
+      headers: this._headers,
+    });
   }
 
   getInitialCards() {
-    return this._request('/cards', {
-      headers: this._headers
-    })
+    return this._request("/cards", {
+      headers: this._headers,
+    });
   }
 
   editProfile(formValues) {
-    return this._request('/users/me', {
-      method: 'PATCH',
+    return this._request("/users/me", {
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
         name: formValues.name,
-        about: formValues.about
-      })
-    })
+        about: formValues.about,
+      }),
+    });
   }
 
   addNewCard(formValues) {
-    return this._request('/cards', {
-      method: 'POST',
+    return this._request("/cards", {
+      method: "POST",
       headers: this._headers,
       body: JSON.stringify({
         name: formValues.place,
-        link: formValues.url
-      })
-    })
+        link: formValues.url,
+      }),
+    });
   }
 
   deleteCard(cardId) {
     return this._request(`/cards/${cardId}`, {
-      method: 'DELETE',
-      headers: this._headers
-    })
+      method: "DELETE",
+      headers: this._headers,
+    });
   }
 
   setLike(cardId, method) {
     return this._request(`/cards/${cardId}/likes`, {
       method: method,
-      headers: this._headers
-    })
+      headers: this._headers,
+    });
   }
 
   addNewAvatar(formValues) {
-    return this._request('/users/me/avatar', {
-      method: 'PATCH',
+    return this._request("/users/me/avatar", {
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        avatar: formValues.url
-      })
-    })
+        avatar: formValues.url,
+      }),
+    });
   }
 }
 
 const api = new Api({
-	baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-59',
-	headers: {
-	  authorization: 'cb509dca-886f-481d-bcb8-759a1762ab1b',
-	  'Content-Type': 'application/json'
-	}
- });
- 
- export { api }
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-59",
+  headers: {
+    authorization: "cb509dca-886f-481d-bcb8-759a1762ab1b",
+    "Content-Type": "application/json",
+  },
+});
+
+export { api };
