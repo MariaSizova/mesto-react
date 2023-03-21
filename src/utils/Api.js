@@ -31,24 +31,24 @@ class Api {
     });
   }
 
-  editProfile(formValues) {
+  editProfile(name, about) {
     return this._request("/users/me", {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        name: formValues.name,
-        about: formValues.about,
+        name,
+        about,
       }),
     });
   }
 
-  addNewCard(formValues) {
+  addNewCard(name, link) {
     return this._request("/cards", {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({
-        name: formValues.place,
-        link: formValues.url,
+        name: name,
+        link: link,
       }),
     });
   }
@@ -60,20 +60,20 @@ class Api {
     });
   }
 
-  setLike(cardId, method) {
-    return this._request(`/cards/${cardId}/likes`, {
-      method: method,
-      headers: this._headers,
-    });
-  }
-
-  addNewAvatar(formValues) {
+  addNewAvatar({ avatar }) {
     return this._request("/users/me/avatar", {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        avatar: formValues.url,
+        avatar: avatar,
       }),
+    });
+  }
+
+  changeLikeCardStatus(cardId, isLiked) {
+    return this._request(`/cards/${cardId}/likes`, {
+      method: `${isLiked ? "PUT" : "DELETE"}`,
+      headers: this._headers,
     });
   }
 }
@@ -86,4 +86,4 @@ const api = new Api({
   },
 });
 
-export { api };
+export default api;

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { api } from "../utils/Api.js";
-import Card from "./Card.js";
+import { useContext } from "react";
+import Card from "../components/Card.js";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import pencil from "../images/vector_edit-button.svg";
 import plus from "../images/vector_add-button.svg";
 
@@ -9,25 +9,25 @@ function Main({
   onAddPlace,
   onEditAvatar,
   onCardClick,
-  onDeleteCardClick,
+  onCardLike,
+  onCardDelete,
+  cards,
 }) {
-  const [userName, setUsername] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setuserAvatar] = useState("");
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([{ name, about, avatar }, cardsData]) => {
-        setUsername(name);
-        setUserDescription(about);
-        setuserAvatar(avatar);
-        setCards(cardsData);
-      })
-      .catch((err) => {
-        console.log(err); // выведем ошибку в консоль
-      });
-  }, []);
+  const currentUser = useContext(CurrentUserContext);
+  // Спасибо Вам большое за комментарий, оставил пока длину строки 120, так как если делаю 80, то код
+  // становится на вид слишком дробный)
+  const cardsElements = cards.map((card) => {
+    return (
+      <li className="element" key={card._id}>
+        <Card
+          card={card}
+          onCardClick={onCardClick}
+          onCardLike={onCardLike}
+          onCardDelete={onCardDelete}
+        />
+      </li>
+    );
+  });
 
   return (
     <main className="content">
@@ -36,14 +36,14 @@ function Main({
           <button className="profile__avatar-button" type="button">
             <img
               className="profile__avatar"
-              src={userAvatar}
+              src={currentUser.avatar}
               alt="Аватар пользователя"
               onClick={onEditAvatar}
             />
           </button>
           <div className="profile__info">
             <div className="profile__username">
-              <h1 className="profile__title">{userName}</h1>
+              <h1 className="profile__title">{currentUser.name}</h1>
               <button
                 className="profile__edit-button"
                 type="button"
@@ -56,7 +56,7 @@ function Main({
                 />
               </button>
             </div>
-            <p className="profile__profession">{userDescription}</p>
+            <p className="profile__profession">{currentUser.about}</p>
           </div>
         </div>
         <button
@@ -72,18 +72,7 @@ function Main({
         </button>
       </section>
       <section className="elements">
-        <ul className="cards">
-          {cards.map((card) => {
-            return (
-              <Card
-                card={card}
-                onCardClick={onCardClick}
-                onDeleteCardClick={onDeleteCardClick}
-                key={card._id}
-              />
-            );
-          })}
-        </ul>
+        <ul className="cards">{cardsElements}</ul>
       </section>
     </main>
   );
