@@ -24,7 +24,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 
   return (
     <>
-      <li className="element">
+      <div className="element">
         {isOwn && (
           <button
             className="element__delete-button"
@@ -47,7 +47,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
           ></button>
           <span className="element__count-likes">{card.likes.length}</span>
         </div>
-      </li>
+      </div>
     </>
   );
 }
