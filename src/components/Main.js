@@ -14,13 +14,15 @@ function Main({
   cards,
 }) {
   const currentUser = useContext(CurrentUserContext);
-  // Спасибо Вам большое за комментарий, оставил пока длину строки 120, так как если делаю 80, то код
-  // становится на вид слишком дробный)
+
   const cardsElements = cards.map((card) => {
     return (
       <li className="element" key={card._id}>
         <Card
           card={card}
+          key={card._id}
+          link={card.link}
+          name={card.name}
           onCardClick={onCardClick}
           onCardLike={onCardLike}
           onCardDelete={onCardDelete}
